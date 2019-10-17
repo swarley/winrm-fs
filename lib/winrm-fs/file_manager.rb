@@ -78,7 +78,7 @@ module WinRM
             out = _write_file(fd, output)
             index += out.length
 
-            yield out.length, index
+            block.call out.length, index
           end
         end
         true
