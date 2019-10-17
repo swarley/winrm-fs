@@ -60,7 +60,7 @@ module WinRM
       # @param [String] The full path on the remote machine
       # @param [String] The full path to write the file to locally
       # rubocop:disable Metrics/MethodLength
-      def download(remote_path, local_path, chunk_size = 1024 * 1024, first = true)
+      def download(remote_path, local_path, chunk_size = 1024 * 1024, first = true, &block)
         @logger.debug("downloading: #{remote_path} -> #{local_path} #{chunk_size}")
         index = 0
         output = _output_from_file(remote_path, chunk_size, index)
@@ -77,6 +77,8 @@ module WinRM
 
             out = _write_file(fd, output)
             index += out.length
+
+            yield index
           end
         end
         true
